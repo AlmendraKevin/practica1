@@ -38,6 +38,7 @@ public class CalculadoraController {
     public float potencia(@RequestParam(value = "numA") float a){
         return  a*a;
     }
+
     @GetMapping("/porcentaje")
     public float porcentaje(@RequestParam(value = "numA") float a,
                             @RequestParam(value = "numB") float b){
