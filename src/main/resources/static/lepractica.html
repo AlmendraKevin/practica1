@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<label>Numero 1</label><br>
+<input type="number" id="numA" name="numA"><br>
+<label>Numero 2</label><br>
+<input type="number" id="numB" name="numB"><br>
+<label>Operacion</label><br>
+<select name="OPERACION" id="ope">
+    <option value="SUMA">SUMA</option>
+    <option value="RESTA">RESTA</option>
+    <option value="MULTIPLICACION">MULTIPLICACION</option>
+    <option value="DIVISION">DIVISION</option>
+</select><br>
+<button onclick="consumirCalculadora()"> Invocar calculadora</button>
+<script>
+
+
+ function consumirCalculadora() {
+
+     const http = new XMLHttpRequest();
+     http.withCredentials = true
+     var url = "http://localhost:1313/ops";
+     var numA = document.getElementById("numA").value;
+     var numB = document.getElementById("numB").value;
+     var ope = document.getElementById("ope").value;
+     http.responseType = 'json';
+     http.open("POST", url, true);
+     http.onreadystatechange = function() {
+         if(http.readyState == 4 && http.status == 200) {
+             //aqui obtienes la respuesta de    tu peticion
+             //alert(JSON.stringify((http.response)));
+             alert(http.response.resultado)
+         }
+     }
+     var coco = new Object();
+     coco.numeroA=parseInt(numA);
+     coco.numeroB=parseInt(numB);
+     coco.op=ope;
+     http.setRequestHeader("Content-type", "application/json");
+     http.setRequestHeader("Access-Control-Allow-Origin","true");
+     http.send(JSON.stringify(coco));
+
+ }
+
+</script>
+</body>
+</html>

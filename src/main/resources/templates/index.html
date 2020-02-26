@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Calculadora</title>
+    <link type="text/css" href="estilo.css" rel="stylesheet">
+</head>
+<body>
+
+    <label>Numero 1</label><br>
+    <input type="number" id="numA" name="numA"><br>
+    <label>Numero 2</label><br>
+    <input type="number" id="numB" name="numB"><br>
+    <label>Operacion</label><br>
+    <select name="OPERACION" id="ope">
+        <option value="SUMA">SUMA</option>
+        <option value="RESTA">RESTA</option>
+        <option value="MULTIPLICACION">MULTIPLICACION</option>
+        <option value="DIVISION">DIVISION</option>
+    </select><br>
+
+    <label>Resultado</label><br>
+    <table>
+        <tr>
+            <td colspan="4">
+        <span id="resu"></span>
+            </td>
+        </tr>
+    </table>
+
+
+    <button onclick="Enviar()">Enviar</button>
+
+<script>
+
+    function Enviar() {
+
+        var http = new XMLHttpRequest();
+        http.withCredentials = true;
+        var url = "http://localhost:1313/ops";
+        var numA = document.getElementById('numA').value;
+        var numB = document.getElementById('numB').value;
+        var ope  = document.getElementById('ope').value;
+        http.responseType = "json";
+        http.open("POST", url, true);
+        http.onreadystatechange = function(){
+            if(http.readyState ==4&&http.status==200){
+
+                document.getElementById("resu").innerText = http.response.resultado;
+
+            }
+        }
+
+        var datos = new Object();
+        datos.numeroA=parseInt(numA);
+        datos.numeroB=parseInt(numB);
+        datos.op=ope;
+        http.setRequestHeader("Content-type", "application/json");
+        http.setRequestHeader("Access-Control-Allow-Origin","true");
+        http.send(JSON.stringify(datos));
+
+    }
+</script>
+</body>
+</html>
